@@ -21,8 +21,9 @@ jobs:
 
       - name: Install Liquibase
         run: |
-          curl -s https://download.liquibase.com/liquibase.tar.gz | tar xz
-          sudo mv liquibase /usr/local/bin/liquibase
+          curl -sL https://github.com/liquibase/liquibase/releases/download/v4.32.0/liquibase-4.32.0.tar.gz -o liquibase.tar.gz
+          tar -xzf liquibase.tar.gz
+          sudo cp liquibase/liquibase /usr/local/bin/
           liquibase --version
 
       - name: Run Liquibase update
