@@ -1,0 +1,17 @@
+# Liquibase
+liquibase.log
+
+# OS junk
+*.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
+
+# Java artifacts
+*.class
+target/
+
+# Environment configs (if sensitive)
+.env
