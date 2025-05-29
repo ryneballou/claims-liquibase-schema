@@ -1,0 +1,38 @@
+name: Liquibase Auto Update
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Liquibase
+        run: |
+          curl -s https://download.liquibase.com/liquibase.tar.gz | tar xz
+          sudo mv liquibase /usr/local/bin/liquibase
+          liquibase --version
+
+      - name: Run Liquibase update
+        env:
+          LIQUIBASE_URL: ${{ secrets.LIQUIBASE_URL }}
+          LIQUIBASE_USERNAME: ${{ secrets.LIQUIBASE_USERNAME }}
+          LIQUIBASE_PASSWORD: ${{ secrets.LIQUIBASE_PASSWORD }}
+        run: |
+          liquibase --changeLogFile=db/changelog/db.changelog-master.yaml \
+                    --url=$LIQUIBASE_URL \
+                    --username=$LIQUIBASE_USERNAME \
+                    --password=$LIQUIBASE_PASSWORD \
+                    update
